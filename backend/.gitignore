@@ -15,6 +15,8 @@ build/
 .DS_Store
 
 # Environment variables
+.env
+.env.*
 
 # Log files
 npm-debug.log*
