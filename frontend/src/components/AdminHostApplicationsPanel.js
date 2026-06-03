@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Button, Badge, Spinner, Alert } from 'react-bootstrap';
+import { Container, Card, Button, Alert } from 'react-bootstrap';
 import { hostApplicationsAPI } from '../services/api';
 import './AdminHostApplicationsPanel.css';
 import { 
@@ -11,19 +11,13 @@ import {
   XCircle,
   User,
   Mail,
-  Calendar,
   FileText,
   RefreshCw,
   Filter,
-  Search,
-  CreditCard,
   Home,
   MapPin,
   Phone,
-  Image,
-  AlertCircle,
-  DollarSign,
-  Shield
+  AlertCircle
 } from 'lucide-react';
 
 const AdminHostApplicationsPanel = () => {

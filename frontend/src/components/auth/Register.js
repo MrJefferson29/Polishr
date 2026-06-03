@@ -10,7 +10,6 @@ import {
   FaCheck,
   FaTimes,
   FaGoogle,
-  FaFacebook,
   FaHome,
   FaSignInAlt
 } from 'react-icons/fa';

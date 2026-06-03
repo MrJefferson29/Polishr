@@ -8,12 +8,17 @@ import SalonCard from './SalonCard';
 import SalonSearchBar from './home/SalonSearchBar';
 import styled from 'styled-components';
 import { getCurrentPosition, reverseGeocodeCity } from '../utils/geolocation';
-import { collectSalonImages, pickRandomImage } from '../utils/salonSearch';
-import wig from '../Assets/wigs.png'
+import { collectSalonImages } from '../utils/salonSearch';
+import HeroFadeCarousel from './home/HeroFadeCarousel';
+import wig from '../Assets/wigs.png';
 
 const NEARBY_RADIUS_KM = 60;
-const HERO_FALLBACK =
-  'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900&q=80';
+const HERO_FALLBACKS = [
+  'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900&q=80',
+  'https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=900&q=80',
+  'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&q=80',
+  'https://images.unsplash.com/photo-1519014816548-bf9abb066534?w=900&q=80',
+];
 
 const HeroSection = styled.section`
   position: relative;
@@ -97,13 +102,6 @@ const HeroImageCol = styled.div`
     display: block;
     flex: 1;
     max-width: 48%;
-  }
-
-  img {
-    width: 100%;
-    height: clamp(580px, 42vw, 580px);
-    object-fit: fit;
-    opacity: 0.8;
   }
 `;
 
@@ -249,7 +247,7 @@ const Home = () => {
   const [nearbyLoading, setNearbyLoading] = useState(true);
   const [nearbyError, setNearbyError] = useState('');
   const [locationLabel, setLocationLabel] = useState('');
-  const [heroImage, setHeroImage] = useState(HERO_FALLBACK);
+  const [mobileHeroBg, setMobileHeroBg] = useState(HERO_FALLBACKS[0]);
 
   const allSalonsForSearch = useMemo(() => {
     const map = new Map();
@@ -263,12 +261,25 @@ const Home = () => {
     salonsAPI.getPopular().then(({ data }) => setPopular(data)).catch(() => {});
   }, []);
 
-  useEffect(() => {
+  const heroCarouselImages = useMemo(() => {
     const pool = collectSalonImages(allSalonsForSearch);
-    if (pool.length) {
-      setHeroImage(pickRandomImage(pool, HERO_FALLBACK));
+    const picks = [wig];
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    for (const url of shuffled) {
+      if (picks.length >= 4) break;
+      if (!picks.includes(url)) picks.push(url);
     }
+    while (picks.length < 4) {
+      const fallback = HERO_FALLBACKS[picks.length - 1] || HERO_FALLBACKS[0];
+      if (!picks.includes(fallback)) picks.push(fallback);
+      else break;
+    }
+    return picks.slice(0, 4);
   }, [allSalonsForSearch]);
+
+  useEffect(() => {
+    setMobileHeroBg(heroCarouselImages[0] || HERO_FALLBACKS[0]);
+  }, [heroCarouselImages]);
 
   useEffect(() => {
     let cancelled = false;
@@ -348,7 +359,7 @@ const Home = () => {
 
   return (
     <div>
-      <HeroSection $bg={heroImage}>
+      <HeroSection $bg={mobileHeroBg}>
         <HeroInner>
           <HeroTopRow>
             <HeroTextCol>
@@ -359,7 +370,7 @@ const Home = () => {
               </HeroSubtext>
             </HeroTextCol>
             <HeroImageCol>
-              <img src={wig} alt="Salon inspiration" />
+              <HeroFadeCarousel images={heroCarouselImages} alt="Salon inspiration" />
             </HeroImageCol>
           </HeroTopRow>
 

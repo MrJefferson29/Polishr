@@ -8,7 +8,6 @@ import {
   FaEye,
   FaHome,
   FaCheck,
-  FaUser,
   FaEnvelope,
   FaPhone,
   FaMapMarkerAlt,

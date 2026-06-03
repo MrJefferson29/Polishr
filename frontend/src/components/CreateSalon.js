@@ -47,7 +47,7 @@ const CreateSalon = () => {
   const [placeImages, setPlaceImages] = useState([]);
   const [workImages, setWorkImages] = useState([]);
   const [services, setServices] = useState([]);
-  const [openingHours, setOpeningHours] = useState(DEFAULT_HOURS);
+  const [openingHours] = useState(DEFAULT_HOURS);
 
   const update = (field, value) => setForm((f) => ({ ...f, [field]: value }));
 

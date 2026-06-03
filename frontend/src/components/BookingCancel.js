@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { 
   FaTimesCircle, 
   FaArrowLeft,
-  FaHome,
-  FaCalendarAlt
+  FaHome
 } from 'react-icons/fa';
 
 // Airbnb color palette
@@ -151,9 +150,7 @@ const SecondaryButton = styled(Button)`
 `;
 
 const BookingCancel = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const sessionId = searchParams.get('session_id');
 
   const handleGoHome = () => {
     navigate('/');

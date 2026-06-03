@@ -7,7 +7,6 @@ import {
   FaEyeSlash, 
   FaSignInAlt,
   FaGoogle,
-  FaFacebook,
   FaHome,
   FaUserPlus
 } from 'react-icons/fa';

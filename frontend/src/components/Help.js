@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Card, Badge, Accordion, Button } from 'react-bootstrap';
+import { Container, Row, Col, Badge, Accordion, Button } from 'react-bootstrap';
 import { 
       FaBook, FaSearch, FaRocket, FaCalendarAlt, FaHome, FaCreditCard, 
-      FaShieldAlt, FaUser, FaQuestionCircle, FaInfoCircle, FaPlay, FaDownload,
+      FaShieldAlt, FaUser, FaQuestionCircle, FaInfoCircle,
       FaPhone, FaEnvelope, FaComments, FaArrowRight, FaHeadset
     } from 'react-icons/fa';
 import './Help.css';
@@ -322,9 +322,9 @@ const Help = () => {
             <Col lg={3} md={6}>
               <h4>Connect</h4>
               <div className="social-links">
-                <a href="#" aria-label="Facebook">FB</a>
-                <a href="#" aria-label="Twitter">TW</a>
-                <a href="#" aria-label="Instagram">IG</a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">FB</a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">TW</a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">IG</a>
               </div>
             </Col>
           </Row>

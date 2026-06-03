@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, Dropdown, Badge } from 'react-bootstrap';
 import { 
   Search,
@@ -21,7 +21,6 @@ import {
   Rss
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { useSalons } from '../context/SalonsContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import styled from 'styled-components';
@@ -29,12 +28,9 @@ import { hostApplicationsAPI } from '../services/api';
 
 const NavbarComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [pendingHostApps, setPendingHostApps] = useState(0);
 
   const { user, isAuthenticated, logout, isAdmin } = useAuth();
-  const { filteredSalons: _salons } = useSalons();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -51,19 +47,6 @@ const NavbarComponent = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle escape key
-  useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        setShowNotifications(false);
-        setShowLanguageMenu(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, []);
-
   useEffect(() => {
     if (isAdmin) {
       hostApplicationsAPI.list('pending').then(res => setPendingHostApps(res.data.length)).catch(() => setPendingHostApps(0));
@@ -73,8 +56,6 @@ const NavbarComponent = () => {
   const handleLogout = () => {
     logout();
   };
-
-  const getFavoritesCount = () => 0;
 
   // Notifications click handler for admin
   const handleNotificationsClick = () => {

@@ -7,12 +7,6 @@ import {
   RefreshCw, 
   Download, 
   Filter,
-  Calendar,
-  User,
-  Home,
-  DollarSign,
-  CreditCard,
-  TrendingUp,
   AlertCircle,
   CheckCircle,
   Clock

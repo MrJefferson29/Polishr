@@ -571,27 +571,6 @@ const EmptyState = styled.div`
   }
 `;
 
-const MobileToggle = styled.button`
-  display: none;
-  background: none;
-  border: none;
-  font-size: 18px;
-  color: ${airbnbGray};
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  
-  @media (max-width: 768px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  &:hover {
-    background: ${airbnbLightGray};
-  }
-`;
-
 const socket = io(API_BASE_URL);
 
 export default function ChatScreen(props) {

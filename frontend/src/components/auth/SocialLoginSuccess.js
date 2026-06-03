@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import { authAPI } from '../../services/api';
 import { 
   FaCheckCircle, 
@@ -14,7 +13,6 @@ import './Auth.css';
 const SocialLoginSuccess = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { login } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -45,7 +43,6 @@ const SocialLoginSuccess = () => {
         const response = await authAPI.getMe();
 
         if (response.data) {
-          const userData = response.data;
           setSuccess(`Successfully signed in with ${provider}!`);
           
           // Redirect to home page after a short delay

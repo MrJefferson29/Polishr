@@ -151,7 +151,7 @@ const Empty = styled.div`
 `;
 
 const SalonCard = ({ host, salon, onOpen }) => {
-  const images = useMemo(() => getSalonRandomImages(salon, 4), [salon?._id]);
+  const images = useMemo(() => getSalonRandomImages(salon, 4), [salon]);
 
   return (
     <Card onClick={onOpen}>

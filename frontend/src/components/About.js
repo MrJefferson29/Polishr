@@ -19,7 +19,6 @@ import {
   FaHeadset,
   FaChartLine,
   FaLock,
-  FaClock,
   FaSmile,
   FaPhone,
   FaEnvelope,
@@ -401,9 +400,9 @@ const About = () => {
             <Col lg={3} md={6}>
               <h4>Connect</h4>
               <div className="social-links">
-                <a href="#" aria-label="Facebook"><FaFacebook /></a>
-                <a href="#" aria-label="Twitter"><FaTwitter /></a>
-                <a href="#" aria-label="Instagram"><FaInstagram /></a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebook /></a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><FaTwitter /></a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
               </div>
             </Col>
           </Row>

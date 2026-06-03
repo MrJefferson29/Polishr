@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { notificationsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -7,29 +7,18 @@ import {
   FaArrowLeft, 
   FaBell, 
   FaCheck, 
-  FaTimes, 
   FaTrash, 
-  FaEye,
   FaCalendarAlt,
   FaHome,
   FaIdCard,
   FaHeart,
   FaStar,
   FaCreditCard,
-  FaUser,
   FaCog,
   FaGift,
-  FaExclamationTriangle,
-  FaSpinner,
-  FaFilter,
-  FaSearch,
-  FaCheckCircle,
-  FaTimesCircle,
   FaClock,
-  FaBookmark,
-  FaEnvelope
 } from 'react-icons/fa';
-import { Spinner, Alert, Badge, Button } from 'react-bootstrap';
+import { Spinner, Alert, Badge } from 'react-bootstrap';
 
 const Container = styled.div`
   max-width: 800px;
@@ -425,12 +414,8 @@ const UserNotifications = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) return;
-    fetchNotifications();
-  }, [user]);
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
+    if (!user?._id) return;
     try {
       setLoading(true);
       const response = await notificationsAPI.getUserNotifications(user._id);
@@ -441,7 +426,12 @@ const UserNotifications = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?._id]);
+
+  useEffect(() => {
+    if (!user) return;
+    fetchNotifications();
+  }, [user, fetchNotifications]);
 
   const handleMarkAsRead = async (notificationId) => {
     try {

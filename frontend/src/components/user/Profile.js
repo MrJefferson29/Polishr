@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Container, Row, Col, Card, Badge, Button, Alert } from 'react-bootstrap';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -34,13 +34,7 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
 
-  useEffect(() => {
-    if (user && !authLoading) {
-      fetchProfileData();
-    }
-  }, [user, authLoading, retryCount]);
-
-  const fetchProfileData = async () => {
+  const fetchProfileData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -74,7 +68,13 @@ const Profile = () => {
       setError(`Failed to load profile data: ${err.response?.data?.message || err.message}`);
       setLoading(false);
     }
-  };
+  }, [user?._id]);
+
+  useEffect(() => {
+    if (user && !authLoading) {
+      fetchProfileData();
+    }
+  }, [user, authLoading, retryCount, fetchProfileData]);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
