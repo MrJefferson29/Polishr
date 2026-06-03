@@ -571,7 +571,17 @@ const EmptyState = styled.div`
   }
 `;
 
-const socket = io(API_BASE_URL);
+let socket;
+
+function getSocket() {
+  if (!socket) {
+    socket = io(API_BASE_URL, {
+      withCredentials: true,
+      transports: ['polling', 'websocket'],
+    });
+  }
+  return socket;
+}
 
 export default function ChatScreen(props) {
   const { roomId } = useParams();
@@ -628,18 +638,20 @@ export default function ChatScreen(props) {
       .finally(() => setLoading(false));
   }, [chatRoomId, token]);
 
-  // Socket.IO connection
+  // Socket.IO connection (lazy — only when chat screen is open)
   useEffect(() => {
-    socket.emit('joinRoom', { chatRoomId });
+    if (!chatRoomId) return undefined;
+    const sock = getSocket();
+    sock.emit('joinRoom', { chatRoomId });
     const handleReceive = (msg) => {
-      setMessages(prev => {
-        if (prev.some(m => m._id === msg._id)) return prev;
+      setMessages((prev) => {
+        if (prev.some((m) => m._id === msg._id)) return prev;
         return [...prev, msg];
       });
     };
-    socket.on('receiveMessage', handleReceive);
+    sock.on('receiveMessage', handleReceive);
     return () => {
-      socket.off('receiveMessage', handleReceive);
+      sock.off('receiveMessage', handleReceive);
     };
   }, [chatRoomId]);
 

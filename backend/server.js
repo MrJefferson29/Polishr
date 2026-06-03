@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const connectDB = require('./connectDB');
 const IndexRoute = require('./routes/index');
 const cors = require('cors');
+const { corsOriginCallback, getAllowedOrigins } = require('./config/corsOrigins');
 const passport = require('passport');
 const session = require('express-session');
 const http = require('http');
@@ -382,16 +383,15 @@ app.get('/webhook-health', (req, res) => {
 // JSON parser for all other routes
 app.use(express.json());
 app.use(morgan('dev'));
-// CORS configuration
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    process.env.FRONTEND_URL,
-    'https://driv-inn.vercel.app',
-  ].filter(Boolean),
-  credentials: true,
-}));
+// CORS — allow local dev, FRONTEND_URL / CORS_ALLOWED_ORIGINS, and Polishr Vercel URLs
+app.use(
+  cors({
+    origin: corsOriginCallback,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // Session configuration for OAuth
 app.use(
@@ -414,20 +414,17 @@ app.use('/', IndexRoute);
 const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(app);
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://127.0.0.1:3000',
-  process.env.FRONTEND_URL,
-  'https://driv-inn.vercel.app',
-].filter(Boolean);
-
 const io = socketio(server, {
   cors: {
-    origin: allowedOrigins.length ? allowedOrigins : '*',
+    origin: corsOriginCallback,
     methods: ['GET', 'POST'],
     credentials: true,
   },
 });
+
+if (process.env.NODE_ENV === 'production') {
+  console.log('[CORS] Allowed origins:', getAllowedOrigins().join(', '));
+}
 app.set('io', io);
 
 io.on('connection', (socket) => {
